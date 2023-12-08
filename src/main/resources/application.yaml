@@ -1,0 +1,22 @@
+server:
+  port: 8090
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          usermgmt-ms:
+            url: http://localhost:8081/usermgmt
+          shopping-cart-ms:
+            url: http://localhost:8083/shoppingCart
+springdoc:
+  api-docs:
+    path: /v3/checkout-ms-docs

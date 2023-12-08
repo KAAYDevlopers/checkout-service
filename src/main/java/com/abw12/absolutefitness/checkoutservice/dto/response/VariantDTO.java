@@ -1,5 +1,6 @@
-package com.abw12.absolutefitness.checkoutservice.dto;
+package com.abw12.absolutefitness.checkoutservice.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,11 +14,14 @@ import java.math.BigDecimal;
 public class VariantDTO {
 
     @Id
+    private String productId;
     private String variantId;
+    private String variantName;
     private String variantValue;
     private String variantType;
-    private Long stockQuantity;
+    @JsonProperty(value = "ProductInventoryDTO.quantity")
+    private Long variantInventoryQuantity;
+    private String imagePath;
     private BigDecimal buyPrice;
     private BigDecimal onSalePrice;
-
 }

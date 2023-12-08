@@ -4,9 +4,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "shopping-cart-ms")
-public interface ShoppingCartClient {
+@FeignClient(name = "product-catalog-ms")
+public interface ProductCatalogClient {
 
-    @GetMapping("/getCartDataByUserId/{userId}")
-    String getShoppingCartDetails(@PathVariable("userId") String userId);
+    @GetMapping("/getVariantData/{variantId}")
+    String getVariantDetails(@PathVariable String variantId);
 }

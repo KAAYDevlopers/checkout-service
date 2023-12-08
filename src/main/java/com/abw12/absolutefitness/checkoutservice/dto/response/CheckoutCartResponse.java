@@ -1,4 +1,4 @@
-package com.abw12.absolutefitness.checkoutservice.dto;
+package com.abw12.absolutefitness.checkoutservice.dto.response;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -11,10 +11,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartDTO {
+public class CheckoutCartResponse {
 
     @Id
     private String cartId;
     private BigDecimal cartTotal;
-    private List<CartItemDTO> items;
+    private List<CheckoutCartItem> items;
+    private String cartCreatedAt;
+    private String cartModifiedAt;
 }
