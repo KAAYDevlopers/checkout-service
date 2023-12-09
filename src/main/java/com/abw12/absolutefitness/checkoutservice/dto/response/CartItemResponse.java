@@ -1,4 +1,4 @@
-package com.abw12.absolutefitness.checkoutservice.dto.request;
+package com.abw12.absolutefitness.checkoutservice.dto.response;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -8,13 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShoppingCartItemDTO {
+public class CartItemResponse {
 
     @Id
     private String cartItemId;
-    private String variantId;
     private Long cartItemQuantity;
-    private String cartItemCreatedAt;
-    private String cartItemModifiedAt;
+    private VariantDTO variantDetails;
 }
-

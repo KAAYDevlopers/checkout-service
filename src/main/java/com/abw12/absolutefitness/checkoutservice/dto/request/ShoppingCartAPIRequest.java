@@ -10,12 +10,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShoppingCartDTO {
+public class ShoppingCartAPIRequest {
 
     @Id
     private String cartId;
     private String userId;
-    private List<ShoppingCartItemDTO> cartItem;
+    private List<ShoppingCartAPIItem> cartItem;
     private String cartCreatedAt;
     private String cartModifiedAt;
 }

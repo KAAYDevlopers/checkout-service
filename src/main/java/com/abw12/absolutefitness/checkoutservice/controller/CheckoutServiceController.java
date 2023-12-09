@@ -21,15 +21,15 @@ public class CheckoutServiceController {
     @Autowired
     private CheckoutService checkoutService;
 
-    @GetMapping("/getShoppingCart/{userId}")
+    @GetMapping("/getCheckoutPageInfo/{userId}")
     private ResponseEntity<?> checkoutShoppingCart(@PathVariable String userId){
-        logger.info("Inside checkout page :: getting shopping cart details by userId : {}",userId);
+        logger.info("Inside checkout page :: getting checkout page details by userId : {}",userId);
         try{
             if(StringUtils.isEmpty(userId)) throw new RuntimeException("userId cannot be null/empty...");
-            return new ResponseEntity<>(checkoutService.getBagData(userId), HttpStatus.OK);
+            return new ResponseEntity<>(checkoutService.getCheckoutPageData(userId), HttpStatus.OK);
         }catch (Exception e){
-            logger.error("Exception while fetching cart data  by userId : {} => {}",userId,e.getMessage());
-            return new ResponseEntity<>("Exception while fetching cart data by userId ",HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error("Exception while fetching checkout data  by userId : {} => {}",userId,e.getMessage());
+            return new ResponseEntity<>("Exception while fetching checkout data by userId ",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

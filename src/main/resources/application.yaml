@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8091
 
 feign:
   client:
@@ -17,6 +17,8 @@ spring:
             url: http://localhost:8081/usermgmt
           shopping-cart-ms:
             url: http://localhost:8083/shoppingCart
+          product-catalog-ms:
+            url: http://localhost:8090/catalog/product
 springdoc:
   api-docs:
     path: /v3/checkout-ms-docs

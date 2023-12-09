@@ -11,12 +11,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckoutCartResponse {
+public class CartResponse {
 
     @Id
     private String cartId;
     private BigDecimal cartTotal;
-    private List<CheckoutCartItem> items;
+    private List<CartItemResponse> items;
     private String cartCreatedAt;
     private String cartModifiedAt;
 }

@@ -1,6 +1,5 @@
 package com.abw12.absolutefitness.checkoutservice.dto.response;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckoutCartItem {
+public class ResponseData {
 
-    @Id
-    private String cartItemId;
-    private Long cartItemQuantity;
-    private VariantDTO variantDetails;
+    private CartResponse cartData;
+    private UserInfoDTO userInfo;
 }
