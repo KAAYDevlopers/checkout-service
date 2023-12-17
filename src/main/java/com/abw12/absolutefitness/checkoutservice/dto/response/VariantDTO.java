@@ -18,7 +18,7 @@ public class VariantDTO {
     private String variantName;
     private String variantValue;
     private String variantType;
-    private Long variantInventoryQuantity;
+//    private Long variantInventoryQuantity;
     private String imagePath;
     private BigDecimal buyPrice;
     private BigDecimal onSalePrice;

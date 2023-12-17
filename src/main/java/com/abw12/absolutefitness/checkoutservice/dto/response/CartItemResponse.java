@@ -12,6 +12,7 @@ public class CartItemResponse {
 
     @Id
     private String cartItemId;
-    private Long cartItemQuantity;
+    private VariantInventoryData cartItemInventoryData;
+    private Long cartQuantity;
     private VariantDTO variantDetails;
 }

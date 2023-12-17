@@ -28,7 +28,7 @@ public class CheckoutServiceController {
             if(StringUtils.isEmpty(userId)) throw new RuntimeException("userId cannot be null/empty...");
             return new ResponseEntity<>(checkoutService.getCheckoutPageData(userId), HttpStatus.OK);
         }catch (Exception e){
-            logger.error("Exception while fetching checkout data  by userId : {} => {}",userId,e.getMessage());
+            logger.error("Exception while fetching checkout page data  by userId : {} => {}",userId,e.getMessage());
             return new ResponseEntity<>("Exception while fetching checkout data by userId ",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
