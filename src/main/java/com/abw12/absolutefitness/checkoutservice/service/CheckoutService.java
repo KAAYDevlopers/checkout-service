@@ -1,6 +1,6 @@
 package com.abw12.absolutefitness.checkoutservice.service;
 
-import com.abw12.absolutefitness.checkoutservice.constants.Constants;
+import com.abw12.absolutefitness.checkoutservice.dto.request.InventoryValidationReq;
 import com.abw12.absolutefitness.checkoutservice.dto.request.ShoppingCartAPIRequest;
 import com.abw12.absolutefitness.checkoutservice.dto.response.*;
 import com.abw12.absolutefitness.checkoutservice.gateway.interfaces.ProductCatalogClient;
@@ -51,7 +51,7 @@ public class CheckoutService {
         ShoppingCartAPIRequest cartRestApiResponse;
         try {
             cartRestApiResponse= objectMapper.readValue(shoppingCartClientResponse, ShoppingCartAPIRequest.class);
-            logger.debug("Fetched cart details with userId : {} => {}",userId,cartRestApiResponse);
+            logger.info("Fetched cart details with userId : {} => {}",userId,cartRestApiResponse);
         } catch (JsonProcessingException e) {
             logger.error("Error while parsing shopping cart client response => {}" , e.getMessage());
             throw new RuntimeException(e);
@@ -64,22 +64,6 @@ public class CheckoutService {
                     cartItem.setCartQuantity(dbItem.getCartItemQuantity());
 
                     String variantId = dbItem.getVariantId();
-                    //calling cartValidation api to fetch variant inventory
-                    VariantInventoryData variantInventoryData;
-                    ResponseEntity<Map<String, Object>> variantInventoryRes = productCatalogInventoryClient.cartValidation(variantId);
-                    if(variantInventoryRes.getStatusCode().is2xxSuccessful() && variantInventoryRes.hasBody()){
-                        variantInventoryData = objectMapper.convertValue(variantInventoryRes.getBody(), VariantInventoryData.class);
-                        logger.info("Cart Item variant inventory data {} :: with  variantId :: {} ", variantInventoryData,variantId);
-                        if(variantInventoryData.getInventoryQuantity() !=null) {
-                            String cartItemCurrentStockStatus = dbItem.getCartItemQuantity() < variantInventoryData.getInventoryQuantity()
-                                    ? Constants.IN_STOCK
-                                    : Constants.OUT_OF_STOCK;
-                            variantInventoryData.setStockStatus(cartItemCurrentStockStatus);
-                        }
-                        cartItem.setCartItemInventoryData(variantInventoryData);
-                    }else {
-                        throw new RuntimeException("Failed to check the cart validation of variant using variantId :: {}" + variantId);
-                    }
                     //calling the product catalog ms rest api to get product variant details using variantId
                     logger.info("Retrieving Product Variant Data by variantId :: {}", variantId);
 
@@ -87,11 +71,23 @@ public class CheckoutService {
                     ResponseEntity<Map<String, Object>> variantDetails = productCatalogClient.getVariantDetails(variantId);
                     if(variantDetails.getStatusCode().is2xxSuccessful() && variantDetails.hasBody()){
                         variantDataRes = objectMapper.convertValue(variantDetails.getBody(), VariantDTO.class);
-                        logger.debug("Variant details fetched form product-catalog-ms by variantId :: {} => {}", variantId, variantDataRes);
+                        logger.info("Variant details fetched form product-catalog-ms by variantId :: {} => {}", variantId, variantDataRes);
                     }else {
                         throw new RuntimeException("Failed to fetch the variant data using variantId :: {}" + variantId);
                     }
                     cartItem.setVariantDetails(variantDataRes);
+
+                    //calling cartValidation api to fetch variant inventory
+                    InventoryValidationRes variantInventoryData;
+                    InventoryValidationReq inventoryValidationReq = new InventoryValidationReq(variantId, dbItem.getCartItemQuantity());
+                    ResponseEntity<Map<String, Object>> variantInventoryRes = productCatalogInventoryClient.cartValidation(inventoryValidationReq);
+                    if(variantInventoryRes.getStatusCode().is2xxSuccessful() && variantInventoryRes.hasBody()){
+                        variantInventoryData = objectMapper.convertValue(variantInventoryRes.getBody(), InventoryValidationRes.class);
+                        logger.info("Cart Item variant inventory data {} :: with  variantId :: {} ", variantInventoryData,variantId);
+                        cartItem.setCartItemInventoryData(variantInventoryData);
+                    }else {
+                        throw new RuntimeException("Failed to check the cart validation of variant using variantId :: {}" + variantId);
+                    }
                     return cartItem;
                 })
                 .toList();
@@ -115,7 +111,7 @@ public class CheckoutService {
         if(userMgmtResponse.getStatusCode().is2xxSuccessful() && userMgmtResponse.hasBody()){
             Map<String, Object> responseBody = userMgmtResponse.getBody();
             userData = objectMapper.convertValue(responseBody, UserInfoDTO.class);
-            logger.debug("User Info fetched from userMgmt MS with userId :: {} => {}",userId,userData);
+            logger.info("User Info fetched from userMgmt MS with userId :: {} => {}",userId,userData);
         }else{
             throw new RuntimeException("Failed to fetch the user info from userMgmt rest call using userId :: " + userId);
         }
@@ -124,7 +120,7 @@ public class CheckoutService {
 
     private BigDecimal calculateCartTotal(List<CartItemResponse> itemList) {
         return itemList.stream()
-                .map(cartItem -> Map.entry(cartItem.getCartItemInventoryData().getInventoryQuantity(), cartItem.getVariantDetails().getOnSalePrice()))
+                .map(cartItem -> Map.entry(cartItem.getCartItemInventoryData().getQuantityRequested(), cartItem.getVariantDetails().getOnSalePrice()))
                 .map(entry -> entry.getValue().multiply(BigDecimal.valueOf(entry.getKey())))
                 .reduce(BigDecimal::add)
                 .orElseThrow(() -> new RuntimeException("error while calculating the cart total"));
