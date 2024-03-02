@@ -118,6 +118,11 @@ public class CheckoutService {
         return userData;
     }
 
+    /**
+     * @param itemList list of all the variants present in the cart
+     * @return total cart amount calculated without GST/Tax
+     * todo - decide and implement tax and offer calculation logic
+     */
     private BigDecimal calculateCartTotal(List<CartItemResponse> itemList) {
         return itemList.stream()
                 .map(cartItem -> Map.entry(cartItem.getCartItemInventoryData().getQuantityRequested(), cartItem.getVariantDetails().getOnSalePrice()))

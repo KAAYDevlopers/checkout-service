@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+data:
+  application-dev.yaml: |
+    spring:
+      cloud:
+        openfeign:
+          client:
+            config:
+              usermgmt-ms:
+                url: http://usermgmt-service:8081/usermgmt
+              shopping-cart-ms:
+                url: http://shopping-cart-service:8083/shoppingCart
+              product-catalog-ms:
+                url: http://product-catalog:8090/catalog/product
+              product-inventory-controller:
+                url: http://product-catalog:8090/catalog/inventory
+    feign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: basic
+    server:
+      port: {{ .Values.app.port }}
+    springdoc:
+      api-docs:
+        path: /v3/checkout-service-docs

@@ -23,4 +23,4 @@ spring:
             url: http://product-catalog:8090/catalog/inventory
 springdoc:
   api-docs:
-    path: /v3/checkout-ms-docs
+    path: /v3/checkout-service-docs

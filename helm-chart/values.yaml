@@ -1,0 +1,12 @@
+app:
+  replicas: 1
+  name: checkout-service-ms
+  configPath: /app/config
+  port: 8091
+
+configMap:
+  name: checkout-service-config
+
+image:
+  repository: abw12/checkout-service-ms
+  tag: v1

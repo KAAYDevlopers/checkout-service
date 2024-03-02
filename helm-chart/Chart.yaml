@@ -1,0 +1,4 @@
+apiVersion: v2
+name: checkout-service-ms
+description: Helm chart for checkout-service-ms
+version: 1.0.0-SNAPSHOT
