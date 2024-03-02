@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class InventoryValidationRes {
 
     private String variantId;
+    private String variantInventoryId;
     private String stockStatus;
     private Long quantityRequested;
     private Long quantityAvailable;
