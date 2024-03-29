@@ -21,6 +21,8 @@ spring:
             url: http://localhost:8090/catalog/product
           product-inventory-controller:
             url: http://localhost:8090/catalog/inventory
+          offer-mgmt-coupons-controller:
+            url: http://localhost:8087/coupon/v1
 springdoc:
   api-docs:
     path: /v3/checkout-service-docs
