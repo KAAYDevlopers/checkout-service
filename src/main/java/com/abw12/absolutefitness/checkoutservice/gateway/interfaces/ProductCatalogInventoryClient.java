@@ -11,6 +11,7 @@ import java.util.Map;
 @FeignClient("product-inventory-controller")
 public interface ProductCatalogInventoryClient {
 
+    // TODO: 12-03-2024 need to update it to request param since the check stockt staus endpoint accept an request param
     @GetMapping("/checkStockStatus")
     ResponseEntity<Map<String,Object>> cartValidation(@RequestBody InventoryValidationReq request);
 }

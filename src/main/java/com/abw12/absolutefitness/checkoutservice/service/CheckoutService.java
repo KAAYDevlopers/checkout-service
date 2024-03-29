@@ -3,10 +3,7 @@ package com.abw12.absolutefitness.checkoutservice.service;
 import com.abw12.absolutefitness.checkoutservice.dto.request.InventoryValidationReq;
 import com.abw12.absolutefitness.checkoutservice.dto.request.ShoppingCartAPIRequest;
 import com.abw12.absolutefitness.checkoutservice.dto.response.*;
-import com.abw12.absolutefitness.checkoutservice.gateway.interfaces.ProductCatalogClient;
-import com.abw12.absolutefitness.checkoutservice.gateway.interfaces.ProductCatalogInventoryClient;
-import com.abw12.absolutefitness.checkoutservice.gateway.interfaces.ShoppingCartClient;
-import com.abw12.absolutefitness.checkoutservice.gateway.interfaces.UserMgmtClient;
+import com.abw12.absolutefitness.checkoutservice.gateway.interfaces.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -30,16 +27,34 @@ public class CheckoutService {
     private ProductCatalogInventoryClient productCatalogInventoryClient;
     @Autowired
     private UserMgmtClient userMgmtClient;
+
+    @Autowired
+    private OfferMgmtClient offerMgmtClient;
     @Autowired
     private ObjectMapper objectMapper;
 
     public ResponseData getCheckoutPageData(String userId){
         logger.info("Retrieving the checkout page info for user with userId :: {}",userId);
         ResponseData responseData = new ResponseData();
-        responseData.setCartData(getShoppingCartData(userId));
-        responseData.setUserInfo(getUserInfo(userId));
+//        responseData.setCartData(getShoppingCartData(userId));
+//        responseData.setUserInfo(getUserInfo(userId));
+        responseData.setCouponsData(fetchCoupons(userId));
         logger.info("Successfully retrieved checkout page data for user with userId :: {} => {}",userId,responseData);
         return responseData;
+    }
+
+    private List<CouponResponse> fetchCoupons(String userId) {
+        logger.info("Fetching the coupons applicable for user with userId={}",userId);
+        List<CouponResponse> response;
+        ResponseEntity<List<CouponResponse>> offerMgmtResponse = offerMgmtClient.fetchCouponsList(userId);
+        if(offerMgmtResponse.getStatusCode().is2xxSuccessful() && offerMgmtResponse.hasBody()){
+            response = offerMgmtResponse.getBody();
+            logger.info("Response from the fetchCouponsList API call for userId={} => {}",userId,response);
+        }else{
+            logger.error("Failed to fetch the user info from userMgmt rest call using userId={} => {}", userId,offerMgmtResponse.getStatusCode());
+            throw new RuntimeException("Failed to fetch the user info from userMgmt rest call using userId :: " + userId);
+        }
+        return response;
     }
 
     private CartResponse getShoppingCartData(String userId) {
