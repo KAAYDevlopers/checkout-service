@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseData {
+public class CouponVariantDTO {
+    private UUID id;
+    private String variantId;
 
-    private CartResponse cartData;
-    private UserInfoDTO userInfo;
-    private List<GetCouponResponse> couponsData;
 }

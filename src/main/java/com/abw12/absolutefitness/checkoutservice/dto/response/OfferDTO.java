@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseData {
+public class OfferDTO {
 
-    private CartResponse cartData;
-    private UserInfoDTO userInfo;
-    private List<GetCouponResponse> couponsData;
+    private String offerId;
+    private String discountType;
+    private Integer discountValue;
 }
