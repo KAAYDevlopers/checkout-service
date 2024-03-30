@@ -10,13 +10,15 @@ data:
           client:
             config:
               usermgmt-ms:
-                url: http://usermgmt-service:8081/usermgmt
+                url: http://usermgmt-service-ms.absolutehealth.svc.cluster.local:80/usermgmt
               shopping-cart-ms:
-                url: http://shopping-cart-service:8083/shoppingCart
+                url: http://shopping-cart-ms.absolutehealth.svc.cluster.local:80/shoppingCart
               product-catalog-ms:
-                url: http://product-catalog:8090/catalog/product
+                url: http://product-catalog-ms.absolutehealth.svc.cluster.local:80/catalog/product
               product-inventory-controller:
-                url: http://product-catalog:8090/catalog/inventory
+                url: http://product-catalog-ms.absolutehealth.svc.cluster.local:80/catalog/inventory
+              offer-mgmt-coupons-controller:
+                url: http://offer-management-ms.absolutehealth.svc.cluster.local:80/coupon/v1
     feign:
       client:
         config:

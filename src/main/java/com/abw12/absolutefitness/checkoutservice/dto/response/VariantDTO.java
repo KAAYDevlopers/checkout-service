@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +20,8 @@ public class VariantDTO {
     private String variantValue;
     private String variantType;
 //    private Long variantInventoryQuantity;
-    private String imagePath;
+    private List<String> imageUrlList;
     private BigDecimal buyPrice;
     private BigDecimal onSalePrice;
+    private OfferDTO offer;
 }

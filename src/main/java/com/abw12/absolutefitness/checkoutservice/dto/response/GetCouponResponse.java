@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CouponResponse {
+public class GetCouponResponse {
 
     private String couponId;
+    private String couponCode;
     private String description;
     private String discountType;
     private Integer discountValue;
     private Double minOrderValue;
-    private String couponCode;
 }
